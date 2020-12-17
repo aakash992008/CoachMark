@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        tools:context=".MainActivity">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Text To Speech"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Text Here"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/speak_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Speak"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Language"
+            android:layout_marginEnd="10dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_text"
+            android:layout_marginRight="10dp" />
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/appCompatTextView3"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView3">
+
+            <RadioButton
+                android:id="@+id/radio_hindi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Hindi" />
+
+            <RadioButton
+                android:id="@+id/radio_english"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="English" />
+            <RadioButton
+                android:id="@+id/radio_marathi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Marathi" />
+
+            <RadioButton
+                android:id="@+id/radio_kannada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kannada" />
+
+            <RadioButton
+                android:id="@+id/radio_gujrati"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gujrati" />
+        </RadioGroup>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Adjust Pitch"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toStartOf="@+id/radio_group"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_text" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Low"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekbar" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="High"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/appCompatTextView3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@+id/seekbar" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="1"
+            android:min="1"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/radio_group"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView4" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/radio_group"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekbar" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/coach"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Coach Marks"
+            app:layout_constraintBottom_toTopOf="@+id/speak_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/pay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pay Here"
+            app:layout_constraintBottom_toTopOf="@+id/coach"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
