@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/description_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:contentPadding="20dp"
+            app:cardCornerRadius="10dp"
+            android:background="@color/white">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/description_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DESCRIPTION vjghvhgvhvhgvhgvhgvhgvhvhvhvhgvhvhv" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/next_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NEXT"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/pointer"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:elevation="@dimen/_12sdp"
+            android:src="@drawable/hand_up"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        <View
+            android:id="@+id/top_transparent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent" />
+
+
+        <View
+            android:id="@+id/bottom_transparent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent" />
+
+
+        <View
+            android:id="@+id/left_transparent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent"/>
+
+        <View
+            android:id="@+id/right_transparent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
