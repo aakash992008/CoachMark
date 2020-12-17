@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:background="@color/black"
-        android:elevation="10dp">
+        android:elevation="10dp"
+        tools:background="@color/black">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/description_card"
@@ -18,31 +19,34 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:background="@drawable/decent">
+                android:background="@drawable/decent"
+                android:padding="20dp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/description_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:text="DESCRIPTION vjghvhgvhvhgvhgvhgvhgvhvhvhvhgvhvhv" />
+                    android:text="DESCRIPTION vjghvhgvhvhgvhgvhgvhgvhvhvhvhgvhvhv"
+                    android:textColor="@color/white" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/next_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NEXT"/>
+            android:text="NEXT" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/closeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/close"
             android:elevation="@dimen/_10sdp"
+            android:src="@drawable/close"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/pointer"
             android:layout_width="@dimen/_30sdp"
@@ -50,24 +54,24 @@
             android:elevation="@dimen/_12sdp"
             android:src="@drawable/hand_up"
             app:layout_constraintBottom_toBottomOf="parent" />
-        
+
         <View
             android:id="@+id/top_transparent"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/transparent" />
-        
+
         <View
             android:id="@+id/bottom_transparent"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/transparent" />
-        
+
         <View
             android:id="@+id/left_transparent"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/transparent"/>
+            android:background="@color/transparent" />
 
         <View
             android:id="@+id/right_transparent"

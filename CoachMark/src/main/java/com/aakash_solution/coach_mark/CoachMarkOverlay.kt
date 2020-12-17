@@ -16,98 +16,99 @@ import androidx.core.view.contains
 import com.aakash_solution.coach_mark.databinding.CoachLayoutBinding
 
 
-class CoachMarkOverlay: View.OnClickListener {
+class CoachMarkOverlay : View.OnClickListener {
 
 
-    private val builder:Builder
+    private val builder: Builder
     private val context: Context
 
-    private lateinit var viewGroup:ViewGroup
-    private var targetView: View?=null
+    private lateinit var viewGroup: ViewGroup
+    private var targetView: View? = null
     private val listOfViews = ArrayList<CoachMarkData>()
-    private var positionCoachMarks=0
-    private val mBinding:CoachLayoutBinding
-    private var textToSpeech:TextToSpeech?=null
+    private var positionCoachMarks = 0
+    private val mBinding: CoachLayoutBinding
+    private var textToSpeech: TextToSpeech? = null
 
-    constructor(context: Context, builder: Builder){
-        this.context=context
-        this.builder=builder
-        mBinding= CoachLayoutBinding.inflate(LayoutInflater.from(context))
+    constructor(context: Context, builder: Builder) {
+        this.context = context
+        this.builder = builder
+        mBinding = CoachLayoutBinding.inflate(LayoutInflater.from(context))
         getBuilderMethods()
-        positionCoachMarks=0
+        positionCoachMarks = 0
         listOfViews.addAll(builder.getTargetViewList())
-        if(listOfViews.isEmpty()){
+        if (listOfViews.isEmpty()) {
             showCoachMark(viewGroup, targetView!!, "")
-        }else{
+        } else {
             showListOfCoachMarks(positionCoachMarks)
         }
         emptyListeners()
         buttonClickListeners()
     }
 
-    private fun getBuilderMethods(){
-        this.targetView=builder.getTargetView()
-        this.viewGroup=builder.getViewGroup()
-        this.textToSpeech=builder.getTextToSpeech()
-        if(!builder.getPointerVisibility()){
-            mBinding.pointer.visibility=View.GONE
+    private fun getBuilderMethods() {
+        this.targetView = builder.getTargetView()
+        this.viewGroup = builder.getViewGroup()
+        this.textToSpeech = builder.getTextToSpeech()
+        if (!builder.getPointerVisibility()) {
+            mBinding.pointer.visibility = View.GONE
         }
-        if(!builder.getDescriptionVisibility()){
-            mBinding.descriptionCard.visibility=View.GONE
+        if (!builder.getDescriptionVisibility()) {
+            mBinding.descriptionCard.visibility = View.GONE
         }
     }
 
-    private fun buttonClickListeners(){
+    private fun buttonClickListeners() {
         mBinding.nextBtn.setOnClickListener {
             nextCoachMark()
         }
         mBinding.closeBtn.setOnClickListener {
-           viewGroup.removeView(mBinding.root)
+            viewGroup.removeView(mBinding.root)
         }
     }
 
-    private fun emptyListeners(){
+    private fun emptyListeners() {
         mBinding.leftTransparent.setOnClickListener(this)
         mBinding.rightTransparent.setOnClickListener(this)
         mBinding.topTransparent.setOnClickListener(this)
         mBinding.bottomTransparent.setOnClickListener(this)
     }
 
-    private fun showListOfCoachMarks(position: Int){
-        if(position<listOfViews.size) {
+    private fun showListOfCoachMarks(position: Int) {
+        if (position < listOfViews.size) {
             showCoachMark(
                 viewGroup,
                 listOfViews[position].targetView,
                 listOfViews[position].description
             )
-        }else{
+        } else {
             viewGroup.removeView(mBinding.root)
         }
     }
 
-    fun restartCoachMark(){
-        positionCoachMarks=0
+    fun restartCoachMark() {
+        positionCoachMarks = 0
         showListOfCoachMarks(positionCoachMarks)
     }
 
-    private fun hideKeyboard(){
-        val imm: InputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    private fun hideKeyboard() {
+        val imm: InputMethodManager =
+            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(viewGroup.windowToken, 0)
     }
 
-    private fun showCoachMark(viewGroup: ViewGroup, targetView: View, description: String){
+    private fun showCoachMark(viewGroup: ViewGroup, targetView: View, description: String) {
 
-        if(viewGroup is ConstraintLayout){
+        if (viewGroup is ConstraintLayout) {
             hideKeyboard()
-            if(!viewGroup.contains(mBinding.root)){
+            if (!viewGroup.contains(mBinding.root)) {
                 viewGroup.addView(mBinding.root)
             }
             generateTransparentView(targetView)
             pointerLocation(targetView)
             pointerDescription(targetView, description)
-        }else if(viewGroup is LinearLayoutCompat){
+        } else if (viewGroup is LinearLayoutCompat) {
             hideKeyboard()
-            if(!viewGroup.contains(mBinding.root)){
+            if (!viewGroup.contains(mBinding.root)) {
                 viewGroup.addView(mBinding.root)
             }
             generateTransparentView(targetView)
@@ -116,133 +117,153 @@ class CoachMarkOverlay: View.OnClickListener {
         }
     }
 
-    private fun generateTransparentView(tView: View){
-        mBinding.mainLayout.layoutParams= matchParentLayoutParams()
-            val parentX=getWidthFromParent(0f,tView)
-            val parentY= getHeightFromParent(0f,tView)
-            Log.e("COMPARE","Height -> ${parentY+tView.y} ${getHeightFromParent(0f,tView)}  width->   ${parentX+tView.x} ${getWidthFromParent(0f,tView)}  ")
-            val constraintSet = ConstraintSet()
-            constraintSet.clone(mBinding.mainLayout)
-            constraintSet.constrainHeight(R.id.top_transparent, parentY.toInt() + 1)
-            constraintSet.constrainWidth(R.id.top_transparent, viewGroup.width)
-            constraintSet.connect(
-                R.id.top_transparent,
-                ConstraintSet.TOP,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.TOP
-            )
+    private fun generateTransparentView(tView: View) {
+        mBinding.mainLayout.layoutParams = matchParentLayoutParams()
+        val parentX = getWidthFromParent(0f, tView)
+        val parentY = getHeightFromParent(0f, tView)
+        Log.e(
+            "COMPARE",
+            "Height -> ${parentY + tView.y} ${
+                getHeightFromParent(
+                    0f,
+                    tView
+                )
+            }  width->   ${parentX + tView.x} ${getWidthFromParent(0f, tView)}  "
+        )
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(mBinding.mainLayout)
+        constraintSet.constrainHeight(R.id.top_transparent, parentY.toInt() + 1)
+        constraintSet.constrainWidth(R.id.top_transparent, viewGroup.width)
+        constraintSet.connect(
+            R.id.top_transparent,
+            ConstraintSet.TOP,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.TOP
+        )
 
-            constraintSet.constrainHeight(
-                R.id.bottom_transparent, viewGroup.height - (parentY.toInt()+tView.height) + 1
-            )
-            constraintSet.constrainWidth(R.id.bottom_transparent, viewGroup.width)
-            constraintSet.connect(
-                R.id.bottom_transparent,
-                ConstraintSet.BOTTOM,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.BOTTOM
-            )
+        constraintSet.constrainHeight(
+            R.id.bottom_transparent, viewGroup.height - (parentY.toInt() + tView.height) + 1
+        )
+        constraintSet.constrainWidth(R.id.bottom_transparent, viewGroup.width)
+        constraintSet.connect(
+            R.id.bottom_transparent,
+            ConstraintSet.BOTTOM,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.BOTTOM
+        )
 
-            constraintSet.constrainHeight(R.id.right_transparent, tView.height + 1)
-            constraintSet.constrainWidth(
-                R.id.right_transparent,
-                viewGroup.width - (tView.x.toInt() + tView.width) + 1
-            )
-            constraintSet.connect(
-                R.id.right_transparent,
-                ConstraintSet.RIGHT,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.RIGHT
-            )
-            constraintSet.connect(
-                R.id.right_transparent,
-                ConstraintSet.TOP, R.id.top_transparent,
-                ConstraintSet.BOTTOM
-            )
-            constraintSet.connect(
-                R.id.right_transparent,
-                ConstraintSet.BOTTOM, R.id.bottom_transparent,
-                ConstraintSet.TOP
-            )
+        constraintSet.constrainHeight(R.id.right_transparent, tView.height + 1)
+        constraintSet.constrainWidth(
+            R.id.right_transparent,
+            viewGroup.width - (tView.x.toInt() + tView.width) + 1
+        )
+        constraintSet.connect(
+            R.id.right_transparent,
+            ConstraintSet.RIGHT,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.RIGHT
+        )
+        constraintSet.connect(
+            R.id.right_transparent,
+            ConstraintSet.TOP, R.id.top_transparent,
+            ConstraintSet.BOTTOM
+        )
+        constraintSet.connect(
+            R.id.right_transparent,
+            ConstraintSet.BOTTOM, R.id.bottom_transparent,
+            ConstraintSet.TOP
+        )
 
-            constraintSet.constrainHeight(R.id.left_transparent, tView.height + 1)
-            constraintSet.constrainWidth(R.id.left_transparent, (tView.x + 1).toInt())
-            constraintSet.connect(
-                R.id.left_transparent,
-                ConstraintSet.LEFT,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.LEFT
-            )
-            constraintSet.connect(
-                R.id.left_transparent,
-                ConstraintSet.TOP, R.id.top_transparent,
-                ConstraintSet.BOTTOM
-            )
-            constraintSet.connect(
-                R.id.left_transparent,
-                ConstraintSet.BOTTOM, R.id.bottom_transparent,
-                ConstraintSet.TOP
-            )
-            constraintSet.applyTo(mBinding.mainLayout)
+        constraintSet.constrainHeight(R.id.left_transparent, tView.height + 1)
+        constraintSet.constrainWidth(R.id.left_transparent, (tView.x + 1).toInt())
+        constraintSet.connect(
+            R.id.left_transparent,
+            ConstraintSet.LEFT,
+            ConstraintSet.PARENT_ID,
+            ConstraintSet.LEFT
+        )
+        constraintSet.connect(
+            R.id.left_transparent,
+            ConstraintSet.TOP, R.id.top_transparent,
+            ConstraintSet.BOTTOM
+        )
+        constraintSet.connect(
+            R.id.left_transparent,
+            ConstraintSet.BOTTOM, R.id.bottom_transparent,
+            ConstraintSet.TOP
+        )
+        constraintSet.applyTo(mBinding.mainLayout)
 
 
     }
-    private fun pointerLocation(tView: View){
-        if(tView.height>tView.width){
+
+    private fun pointerLocation(tView: View) {
+        if (tView.height > tView.width) {
             //Vertical View
 
-        }else{
+        } else {
             //Horizontal View
         }
 
-        val parentX=getWidthFromParent(0f,tView)
-        val parentY= getHeightFromParent(0f,tView)
+        val parentX = getWidthFromParent(0f, tView)
+        val parentY = getHeightFromParent(0f, tView)
 
-        if(parentY+tView.height+(context.resources.getDimension(R.dimen._30sdp))<viewGroup.height){
+        if (parentY + tView.height + (context.resources.getDimension(R.dimen._30sdp)) < viewGroup.height) {
             mBinding.pointer.setImageResource(R.drawable.hand_up)
-            val middleHeight = parentY+(tView.height/2)
-            val middleWidth = parentX+(tView.width/2)
-            mBinding.pointer.x=middleWidth
-            mBinding.pointer.y=middleHeight
-        }else if(parentY-(context.resources.getDimension(R.dimen._30sdp))>10){
-            val x = parentX+(tView.width/2)
-            val y = parentY-(context.resources.getDimension(R.dimen._20sdp))
+            val middleHeight = parentY + (tView.height / 2)
+            val middleWidth = parentX + (tView.width / 2)
+            mBinding.pointer.x = middleWidth
+            mBinding.pointer.y = middleHeight
+        } else if (parentY - (context.resources.getDimension(R.dimen._30sdp)) > 10) {
+            val x = parentX + (tView.width / 2)
+            val y = parentY - (context.resources.getDimension(R.dimen._20sdp))
             mBinding.pointer.setImageResource(R.drawable.hand_down)
-            mBinding.pointer.x=x
-            mBinding.pointer.y=y
-        }else if(parentX-(context.resources.getDimension(R.dimen._30sdp))>10){
-            val x = parentX-(context.resources.getDimension(R.dimen._30sdp))
-            val y = parentY+(tView.height/2.toFloat())
+            mBinding.pointer.x = x
+            mBinding.pointer.y = y
+        } else if (parentX - (context.resources.getDimension(R.dimen._30sdp)) > 10) {
+            val x = parentX - (context.resources.getDimension(R.dimen._30sdp))
+            val y = parentY + (tView.height / 2.toFloat())
             mBinding.pointer.setImageResource(R.drawable.hand_right)
-            mBinding.pointer.x=x
-            mBinding.pointer.y=y
-        }else if(tView.x+tView.width+(context.resources.getDimension(R.dimen._30sdp))<viewGroup.width+10){
-            val x = parentX+(tView.width)
-            val y = parentY+(tView.height/2.toFloat())
+            mBinding.pointer.x = x
+            mBinding.pointer.y = y
+        } else if (tView.x + tView.width + (context.resources.getDimension(R.dimen._30sdp)) < viewGroup.width + 10) {
+            val x = parentX + (tView.width)
+            val y = parentY + (tView.height / 2.toFloat())
             mBinding.pointer.setImageResource(R.drawable.hand_left)
-            mBinding.pointer.x=x
-            mBinding.pointer.y=y
+            mBinding.pointer.x = x
+            mBinding.pointer.y = y
         }
         handAnimator(mBinding.pointer)
     }
-    private fun  matchParentLayoutParams():ViewGroup.LayoutParams{
-        return if(viewGroup is ConstraintLayout){
-            ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,ConstraintLayout.LayoutParams.MATCH_PARENT)
-        }else if(viewGroup is LinearLayoutCompat){
-            LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT,LinearLayoutCompat.LayoutParams.MATCH_PARENT)
-        }else{
-            ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,ConstraintLayout.LayoutParams.MATCH_PARENT)
+
+    private fun matchParentLayoutParams(): ViewGroup.LayoutParams {
+        return if (viewGroup is ConstraintLayout) {
+            ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+            )
+        } else if (viewGroup is LinearLayoutCompat) {
+            LinearLayoutCompat.LayoutParams(
+                LinearLayoutCompat.LayoutParams.MATCH_PARENT,
+                LinearLayoutCompat.LayoutParams.MATCH_PARENT
+            )
+        } else {
+            ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT
+            )
         }
     }
-    private fun pointerDescription(tView: View, description: String){
-        val parentX=getWidthFromParent(0f,tView)
-        val parentY= getHeightFromParent(0f,tView)
-        mBinding.descriptionText.text=description
-        var done=false
+
+    private fun pointerDescription(tView: View, description: String) {
+        val parentX = getWidthFromParent(0f, tView)
+        val parentY = getHeightFromParent(0f, tView)
+        mBinding.descriptionText.text = description
+        var done = false
         mBinding.descriptionCard.viewTreeObserver.addOnGlobalLayoutListener {
             //Checking Bottom
-            if(!done){
-                if(mBinding.descriptionCard.height<viewGroup.height-(parentY+tView.height)){
+            if (!done) {
+                if (mBinding.descriptionCard.height < viewGroup.height - (parentY + tView.height)) {
                     val constraintSet = ConstraintSet()
                     constraintSet.clone(constraintSet)
                     constraintSet.constrainHeight(R.id.description_card, ConstraintSet.WRAP_CONTENT)
@@ -266,7 +287,7 @@ class CoachMarkOverlay: View.OnClickListener {
                         ConstraintSet.LEFT
                     )
                     constraintSet.applyTo(mBinding.mainLayout)
-                }else if(mBinding.descriptionCard.height<parentY){
+                } else if (mBinding.descriptionCard.height < parentY) {
                     val constraintSet = ConstraintSet()
                     constraintSet.clone(constraintSet)
                     constraintSet.constrainHeight(R.id.description_card, ConstraintSet.WRAP_CONTENT)
@@ -290,7 +311,7 @@ class CoachMarkOverlay: View.OnClickListener {
                         ConstraintSet.LEFT
                     )
                     constraintSet.applyTo(mBinding.mainLayout)
-                }else if(parentX>mBinding.descriptionCard.width+10){
+                } else if (parentX > mBinding.descriptionCard.width + 10) {
                     val constraintSet = ConstraintSet()
                     constraintSet.clone(constraintSet)
                     constraintSet.constrainHeight(R.id.description_card, ConstraintSet.WRAP_CONTENT)
@@ -310,11 +331,11 @@ class CoachMarkOverlay: View.OnClickListener {
                     )
                     constraintSet.connect(
                         R.id.description_card,
-                        ConstraintSet.LEFT,ConstraintSet.PARENT_ID,
+                        ConstraintSet.LEFT, ConstraintSet.PARENT_ID,
                         ConstraintSet.LEFT
                     )
                     constraintSet.applyTo(mBinding.mainLayout)
-                }else if(viewGroup.width-(parentX+tView.width)>mBinding.descriptionCard.width+10){
+                } else if (viewGroup.width - (parentX + tView.width) > mBinding.descriptionCard.width + 10) {
                     val constraintSet = ConstraintSet()
                     constraintSet.clone(constraintSet)
                     constraintSet.constrainHeight(R.id.description_card, ConstraintSet.WRAP_CONTENT)
@@ -334,81 +355,86 @@ class CoachMarkOverlay: View.OnClickListener {
                     )
                     constraintSet.connect(
                         R.id.description_card,
-                        ConstraintSet.RIGHT,ConstraintSet.PARENT_ID,
+                        ConstraintSet.RIGHT, ConstraintSet.PARENT_ID,
                         ConstraintSet.RIGHT
                     )
                     constraintSet.applyTo(mBinding.mainLayout)
                 }
-                done=true
+                done = true
             }
 
         }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             textToSpeech?.speak(description, TextToSpeech.QUEUE_FLUSH, null, null)
-        }else{
+        } else {
             textToSpeech?.speak(description, TextToSpeech.QUEUE_FLUSH, null)
         }
     }
 
-    private fun nextCoachMark(){
+    private fun nextCoachMark() {
         positionCoachMarks++
         showListOfCoachMarks(positionCoachMarks)
     }
-    private fun handAnimator(view: View){
-        val xAnimate= ObjectAnimator.ofFloat(view, "scaleX", 0.5f, 1f)
-        xAnimate.repeatCount=400
-        xAnimate.duration=900
+
+    private fun handAnimator(view: View) {
+        val xAnimate = ObjectAnimator.ofFloat(view, "scaleX", 0.5f, 1f)
+        xAnimate.repeatCount = 400
+        xAnimate.duration = 900
         xAnimate.start()
 
-        val yAnimate= ObjectAnimator.ofFloat(view, "scaleY", 0.5f, 1f)
-        yAnimate.repeatCount=400
-        yAnimate.duration=900
+        val yAnimate = ObjectAnimator.ofFloat(view, "scaleY", 0.5f, 1f)
+        yAnimate.repeatCount = 400
+        yAnimate.duration = 900
         yAnimate.start()
 
 
     }
 
 
-    private fun getHeightFromParent(h:Float,view:View):Float{
-         var height=h
-        if(view == viewGroup){
-            return height+view.y
-        }else{
+    private fun getHeightFromParent(h: Float, view: View): Float {
+        var height = h
+        if (view == viewGroup) {
+            return height + view.y
+        } else {
             height += view.y + getHeightFromParent(height, view.parent as View)
         }
         return height
     }
-    private fun getWidthFromParent(w:Float,view:View):Float{
-        var width=w
-        if(view == viewGroup){
-            return width+view.x
-        }else{
+
+    private fun getWidthFromParent(w: Float, view: View): Float {
+        var width = w
+        if (view == viewGroup) {
+            return width + view.x
+        } else {
             width += view.x + getWidthFromParent(width, view.parent as View)
         }
         return width
     }
 
-    class Builder{
+    class Builder {
         //For Single CoachMark
-        private  var targetView: View?=null
+        private var targetView: View? = null
+
         //For List of CoachMarks
         private val listOfViews = ArrayList<CoachMarkData>()
+
         //Root View Where the background overlay will be drawn
         private lateinit var viewGroup: ViewGroup
+
         //Current Context
         private var context: Context
-        private var textToSpeech: TextToSpeech?=null
-        private  var coachMark:CoachMarkOverlay?=null
-        private var pointerVisibility=true
-        private var descriptionVisibility=true
+        private var textToSpeech: TextToSpeech? = null
+        private var coachMark: CoachMarkOverlay? = null
+        private var pointerVisibility = true
+        private var descriptionVisibility = true
 
-        constructor(context: Context){
-            this.context=context
+        constructor(context: Context) {
+            this.context = context
         }
 
-        fun getTargetView(): View?= targetView
+        fun getTargetView(): View? = targetView
         fun getViewGroup(): ViewGroup = viewGroup
-        fun getTargetViewList():ArrayList<CoachMarkData> = listOfViews
+        fun getTargetViewList(): ArrayList<CoachMarkData> = listOfViews
         fun getTextToSpeech(): TextToSpeech? = textToSpeech
         fun getPointerVisibility(): Boolean = pointerVisibility
         fun getDescriptionVisibility(): Boolean = descriptionVisibility
@@ -417,15 +443,15 @@ class CoachMarkOverlay: View.OnClickListener {
         /**
          * Use this when you want to show coachMark for single view Only
          */
-        fun setTargetView(targetView: View):Builder{
-            this.targetView=targetView
+        fun setTargetView(targetView: View): Builder {
+            this.targetView = targetView
             return this
         }
 
         /**
          * Use this when you want to show coachMark for multiple view Only
          */
-        fun setTargetViews(targetView: ArrayList<CoachMarkData>):Builder{
+        fun setTargetViews(targetView: ArrayList<CoachMarkData>): Builder {
             this.listOfViews.clear()
             this.listOfViews.addAll(targetView)
             return this
@@ -434,8 +460,8 @@ class CoachMarkOverlay: View.OnClickListener {
         /**
          * Declare textToSpeech with your own configuration and pass it here
          */
-        fun setTextToSpeech(speech: TextToSpeech):Builder{
-            this.textToSpeech=speech
+        fun setTextToSpeech(speech: TextToSpeech): Builder {
+            this.textToSpeech = speech
             return this
         }
 
@@ -443,31 +469,31 @@ class CoachMarkOverlay: View.OnClickListener {
          * viewGroup is the root group where the transparent view will be added upon
          * right now Constraint layout and Linear Layout are only supported
          */
-        fun setViewGroup(viewGroup: ViewGroup):Builder{
-            this.viewGroup=viewGroup
+        fun setViewGroup(viewGroup: ViewGroup): Builder {
+            this.viewGroup = viewGroup
             return this
         }
 
         /**
          * Want to show Hand Pointing to view
          */
-        fun shouldShowPointer(show:Boolean){
-            pointerVisibility=show
+        fun shouldShowPointer(show: Boolean) {
+            pointerVisibility = show
         }
 
         /**
          * Want to show Description Pointing to view
          */
-        fun shouldShowDescription(show:Boolean){
-            descriptionVisibility=show
+        fun shouldShowDescription(show: Boolean) {
+            descriptionVisibility = show
         }
 
 
         /**
          * Start the CoachMark
          */
-        fun showCoachMark():CoachMarkOverlay{
-            if(coachMark==null){
+        fun showCoachMark(): CoachMarkOverlay {
+            if (coachMark == null) {
                 coachMark = CoachMarkOverlay(context, this)
             }
             return coachMark!!
