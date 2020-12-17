@@ -1,2 +1,0 @@
-# CoachMark
-Coachmark for Android

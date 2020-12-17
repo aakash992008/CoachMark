@@ -1,0 +1,3 @@
+include ':CoachMark'
+include ':app'
+rootProject.name = "CoachMark"
